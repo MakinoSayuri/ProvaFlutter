@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "442886533884",
+    "project_id": "abastecimento-273bb",
+    "storage_bucket": "abastecimento-273bb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442886533884:android:560f56aa60761e5f031d79",
+        "android_client_info": {
+          "package_name": "com.example.provaflutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAILFFMCMnnQI7J1ULv9oAACxfujlOZZlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
