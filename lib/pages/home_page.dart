@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
                 Icon(Icons.favorite, size: 60, color: Colors.white),
                 const SizedBox(height: 8),
                 const Text(
-                  "Abastecimento Cute",
+                  "Abastecimento",
                   style: TextStyle(
                     fontSize: 22,
                     color: Colors.white,

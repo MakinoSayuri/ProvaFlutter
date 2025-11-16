@@ -28,13 +28,11 @@ class _VeiculosPageState extends State<VeiculosPage> {
         backgroundColor: Colors.pink.shade300,
         child: const Icon(Icons.add, color: Colors.white),
         onPressed: () async {
-        
           final result = await Navigator.push<bool>(
             context,
             MaterialPageRoute(builder: (_) => const VeiculoFormPage()),
           );
 
-       
           if (mounted && result == true) setState(() {});
         },
       ),
@@ -102,19 +100,30 @@ class _VeiculosPageState extends State<VeiculosPage> {
                       color: Colors.pink.shade300,
                     ),
                     title: Text(
-                      "${data['marca'] ?? ''} ${data['modelo'] ?? ''}",
+                      "${data['marca']} ${data['modelo']}",
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.pink.shade500,
                         fontWeight: FontWeight.bold,
+                        color: Colors.pink.shade500,
                       ),
                     ),
-                    subtitle: Text(
-                      "Placa: ${data['placa'] ?? '-'}  •  Ano: ${data['ano'] ?? '-'}",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.pink.shade300,
-                      ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 6),
+                        Text(
+                          "Placa: ${data['placa']}",
+                          style: TextStyle(color: Colors.pink.shade300),
+                        ),
+                        Text(
+                          "Ano: ${data['ano']}",
+                          style: TextStyle(color: Colors.pink.shade300),
+                        ),
+                        Text(
+                          "Combustível: ${data['tipoCombustivel']}",
+                          style: TextStyle(color: Colors.pink.shade300),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -126,7 +135,9 @@ class _VeiculosPageState extends State<VeiculosPage> {
     );
   }
 
-  Future<bool> _confirmDelete(DocumentSnapshot<Map<String, dynamic>> doc) async {
+  Future<bool> _confirmDelete(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+  ) async {
     final result = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
@@ -186,6 +197,7 @@ class _VeiculoFormPageState extends State<VeiculoFormPage> {
   final TextEditingController marca = TextEditingController();
   final TextEditingController placa = TextEditingController();
   final TextEditingController ano = TextEditingController();
+  final TextEditingController kmInicial = TextEditingController();
 
   String tipoCombustivel = "Gasolina";
   bool loading = false;
@@ -196,6 +208,7 @@ class _VeiculoFormPageState extends State<VeiculoFormPage> {
     marca.dispose();
     placa.dispose();
     ano.dispose();
+    kmInicial.dispose();
     super.dispose();
   }
 
@@ -212,6 +225,7 @@ class _VeiculoFormPageState extends State<VeiculoFormPage> {
         "placa": placa.text.trim(),
         "ano": ano.text.trim(),
         "tipoCombustivel": tipoCombustivel,
+        "kmInicial": double.parse(kmInicial.text.trim()),
         "createdAt": FieldValue.serverTimestamp(),
       });
 
@@ -236,7 +250,7 @@ class _VeiculoFormPageState extends State<VeiculoFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Adicionar Veículo 💖")),
+      appBar: AppBar(title: const Text("Adicionar Veículo")),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Form(
@@ -265,6 +279,13 @@ class _VeiculoFormPageState extends State<VeiculoFormPage> {
                 label: "Ano",
                 controller: ano,
                 icon: Icons.calendar_month,
+                keyboard: TextInputType.number,
+              ),
+              const SizedBox(height: 16),
+              _inputField(
+                label: "KM Atual do Veículo",
+                controller: kmInicial,
+                icon: Icons.speed,
                 keyboard: TextInputType.number,
               ),
               const SizedBox(height: 16),
@@ -308,10 +329,13 @@ class _VeiculoFormPageState extends State<VeiculoFormPage> {
                       ? const SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
                         )
                       : const Text(
-                          "Salvar 💗",
+                          "Salvar",
                           style: TextStyle(
                             fontSize: 18,
                             color: Colors.white,
