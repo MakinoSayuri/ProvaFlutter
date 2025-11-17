@@ -19,18 +19,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => AuthService())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthService()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Abastecimento',
         theme: ThemeData(
           useMaterial3: true,
+
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.pink,
+            seedColor: Colors.pink.shade300,
             primary: Colors.pink.shade400,
             secondary: Colors.pink.shade200,
+            surface: Colors.white,
             background: Colors.pink.shade50,
           ),
+
           scaffoldBackgroundColor: Colors.pink.shade50,
 
           textTheme: const TextTheme(
@@ -38,50 +43,74 @@ class MyApp extends StatelessWidget {
             bodyLarge: TextStyle(fontFamily: 'Inter'),
             titleLarge: TextStyle(fontFamily: 'Inter'),
           ),
+
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.pink.shade300,
             foregroundColor: Colors.white,
             centerTitle: true,
-            elevation: 4,
-            shadowColor: Colors.pink.shade200,
-            titleTextStyle: const TextStyle(
+            elevation: 5,
+            shadowColor: Colors.pink.shade200.withOpacity(0.4),
+            titleTextStyle: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               fontFamily: 'Inter',
               color: Colors.white,
             ),
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(22)),
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(26),
+              ),
             ),
-          ),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: Colors.pink.shade300,
-            foregroundColor: Colors.white,
           ),
 
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(Colors.pink),
-              foregroundColor: MaterialStatePropertyAll(Colors.white),
-              padding: MaterialStatePropertyAll(
-                EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+              elevation: MaterialStatePropertyAll(2),
+              backgroundColor: MaterialStatePropertyAll(Colors.pink.shade400),
+              foregroundColor: const MaterialStatePropertyAll(Colors.white),
+              padding: const MaterialStatePropertyAll(
+                EdgeInsets.symmetric(vertical: 14, horizontal: 26),
               ),
               shape: MaterialStatePropertyAll(
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             ),
           ),
+
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            elevation: 4,
+            backgroundColor: Colors.pink.shade300,
+            foregroundColor: Colors.white,
+          ),
+
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
             fillColor: Colors.pink.shade50,
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 14,
+              horizontal: 18,
+            ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(22),
               borderSide: BorderSide.none,
             ),
-            labelStyle: TextStyle(color: Colors.pink.shade400),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(22),
+              borderSide: BorderSide(
+                color: Colors.pink.shade300,
+                width: 2,
+              ),
+            ),
+            labelStyle: TextStyle(
+              color: Colors.pink.shade400,
+              fontFamily: "Inter",
+            ),
             prefixIconColor: Colors.pink.shade300,
           ),
         ),
+
         routes: {
           '/': (context) => const EntryPoint(),
           '/login': (context) => const LoginPage(),
@@ -99,6 +128,7 @@ class EntryPoint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthService>(context);
+
     return StreamBuilder(
       stream: auth.authStateChanges,
       builder: (context, snapshot) {
@@ -107,11 +137,7 @@ class EntryPoint extends StatelessWidget {
             body: Center(child: CircularProgressIndicator()),
           );
         }
-        if (snapshot.hasData) {
-          return const HomePage();
-        } else {
-          return const LoginPage();
-        }
+        return snapshot.hasData ? const HomePage() : const LoginPage();
       },
     );
   }

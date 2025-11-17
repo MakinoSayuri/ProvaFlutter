@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/app_drawer.dart'; // 
+import '../widgets/app_drawer.dart';
 import 'veiculos_page.dart';
 import 'registrar_abastecimento_page.dart';
 import 'historico_abastecimentos_page.dart';
@@ -10,7 +10,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Início")),
+      backgroundColor: Colors.pink.shade50,
+      appBar: AppBar(
+        title: const Text("Início"),
+        backgroundColor: Colors.pink.shade300,
+        elevation: 3,
+      ),
       drawer: const AppDrawer(),
 
       body: Padding(
@@ -18,18 +23,37 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const SizedBox(height: 30),
+
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.pink.shade100,
+                    blurRadius: 20,
+                    spreadRadius: 5,
+                  )
+                ],
+              ),
+              child: Icon(
+                Icons.favorite,
+                size: 70,
+                color: Colors.pink.shade300,
+              ),
+            ),
+
             const SizedBox(height: 20),
 
-            Icon(Icons.favorite, size: 80, color: Colors.pink.shade300),
-
-            const SizedBox(height: 16),
-
             Text(
-              "Bem-vinda(o) ao seu app de abastecimento ",
+              "Bem-vinda(o) ao seu app de abastecimento",
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 color: Colors.pink.shade400,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w700,
+                height: 1.3,
               ),
               textAlign: TextAlign.center,
             ),
@@ -43,7 +67,7 @@ class HomePage extends StatelessWidget {
               page: const VeiculosPage(),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 18),
 
             _cuteButton(
               context,
@@ -52,7 +76,7 @@ class HomePage extends StatelessWidget {
               page: const RegistrarAbastecimentoPage(),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 18),
 
             _cuteButton(
               context,
@@ -70,18 +94,46 @@ class HomePage extends StatelessWidget {
       {required String label, required IconData icon, required Widget page}) {
     return SizedBox(
       width: double.infinity,
-      child: ElevatedButton.icon(
-        icon: Icon(icon, color: Colors.white),
-        label: Text(
-          label,
-          style: const TextStyle(fontSize: 18),
-        ),
-        onPressed: () {
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => page),
           );
         },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.pink.shade100.withOpacity(0.4),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Icon(icon, size: 32, color: Colors.pink.shade400),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.pink.shade600,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Icon(Icons.arrow_forward_ios,
+                  size: 18, color: Colors.pink.shade300),
+            ],
+          ),
+        ),
       ),
     );
   }
