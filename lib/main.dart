@@ -5,7 +5,7 @@ import 'services/auth_service.dart';
 import 'pages/login_page.dart';
 import 'pages/register_page.dart';
 import 'pages/home_page.dart';
-import 'firebase_options.dart'; 
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
             background: Colors.pink.shade50,
           ),
           scaffoldBackgroundColor: Colors.pink.shade50,
+
           textTheme: const TextTheme(
             bodyMedium: TextStyle(fontFamily: 'Inter'),
             bodyLarge: TextStyle(fontFamily: 'Inter'),
@@ -40,14 +41,24 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.pink.shade300,
             foregroundColor: Colors.white,
-            elevation: 0,
             centerTitle: true,
+            elevation: 4,
+            shadowColor: Colors.pink.shade200,
             titleTextStyle: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+              fontFamily: 'Inter',
               color: Colors.white,
             ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(22)),
+            ),
           ),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Colors.pink.shade300,
+            foregroundColor: Colors.white,
+          ),
+
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(Colors.pink),
@@ -64,7 +75,7 @@ class MyApp extends StatelessWidget {
             filled: true,
             fillColor: Colors.pink.shade50,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide.none,
             ),
             labelStyle: TextStyle(color: Colors.pink.shade400),

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../services/auth_service.dart';
+import '../widgets/app_drawer.dart'; 
 
 class RegistrarAbastecimentoPage extends StatefulWidget {
   const RegistrarAbastecimentoPage({super.key});
@@ -40,6 +42,9 @@ class _RegistrarAbastecimentoPageState
 
     return Scaffold(
       appBar: AppBar(title: const Text("Registrar Abastecimento")),
+
+      drawer: const AppDrawer(),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Form(
@@ -119,7 +124,6 @@ class _RegistrarAbastecimentoPageState
               ),
               const SizedBox(height: 24),
 
-              // Botão salvar
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

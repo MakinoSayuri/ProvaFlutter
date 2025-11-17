@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../services/auth_service.dart';
+import '../widgets/app_drawer.dart';  
 
 class HistoricoAbastecimentosPage extends StatelessWidget {
   const HistoricoAbastecimentosPage({super.key});
@@ -11,7 +13,6 @@ class HistoricoAbastecimentosPage extends StatelessWidget {
     if (raw is int) return raw;
     if (raw is Timestamp) return raw.millisecondsSinceEpoch;
     if (raw is DateTime) return raw.millisecondsSinceEpoch;
-    // fallback
     return 0;
   }
 
@@ -20,7 +21,12 @@ class HistoricoAbastecimentosPage extends StatelessWidget {
     final auth = Provider.of<AuthService>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Histórico de Abastecimentos')),
+      appBar: AppBar(
+        title: const Text('Histórico de Abastecimentos'),
+      ),
+
+      drawer: const AppDrawer(),
+
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: auth.abastecimentosRef().snapshots(),
         builder: (context, snapshot) {
@@ -44,24 +50,34 @@ class HistoricoAbastecimentosPage extends StatelessWidget {
             return {'snap': qs, 'millis': millis, 'map': map};
           }).toList();
 
-          items.sort((a, b) => (b['millis'] as int).compareTo(a['millis'] as int));
+          items.sort(
+            (a, b) => (b['millis'] as int).compareTo(a['millis'] as int),
+          );
 
           return ListView.separated(
             padding: const EdgeInsets.all(16),
             itemCount: items.length,
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
-              final snap = items[index]['snap'] as QueryDocumentSnapshot<Map<String, dynamic>>;
+              final snap =
+                  items[index]['snap'] as QueryDocumentSnapshot<Map<String, dynamic>>;
               final doc = items[index]['map'] as Map<String, dynamic>;
               final millis = items[index]['millis'] as int;
 
               final date = millis > 0
                   ? DateTime.fromMillisecondsSinceEpoch(millis)
-                  : null; 
-              final valorPago = (doc['valorPago'] is num) ? (doc['valorPago'] as num).toDouble() : 0.0;
+                  : null;
+
+              final valorPago = (doc['valorPago'] is num)
+                  ? (doc['valorPago'] as num).toDouble()
+                  : 0.0;
+
               final litros = doc['quantidadeLitros']?.toString() ?? '-';
               final quilometragem = doc['quilometragem']?.toString() ?? '-';
-              final consumo = (doc['consumo'] is num) ? (doc['consumo'] as num).toDouble() : 0.0;
+
+              final consumo = (doc['consumo'] is num)
+                  ? (doc['consumo'] as num).toDouble()
+                  : 0.0;
 
               return Card(
                 elevation: 4,
@@ -79,8 +95,9 @@ class HistoricoAbastecimentosPage extends StatelessWidget {
                   ),
                   subtitle: Text(
                     "${date != null
-                        ? "${date.day.toString().padLeft(2,'0')}/${date.month.toString().padLeft(2,'0')}/${date.year} • "
-                        : "Date desconhecida • "}KM: $quilometragem\nConsumo: ${consumo.toStringAsFixed(1)} km/L",
+                        ? "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} • "
+                        : "Data desconhecida • "
+                    }KM: $quilometragem\nConsumo: ${consumo.toStringAsFixed(1)} km/L",
                   ),
                   trailing: IconButton(
                     icon: Icon(Icons.delete, color: Colors.red.shade300),
